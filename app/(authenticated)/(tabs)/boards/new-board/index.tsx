@@ -1,4 +1,5 @@
 import { Colors } from "@/constants/Colors";
+import { useSupabase } from "@/context/SupabaseContext";
 import { DEFAULT_COLOR } from "@/types/enums";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, Stack, useGlobalSearchParams, useRouter } from "expo-router";
@@ -16,6 +17,7 @@ const Page = () => {
 	const router = useRouter();
 	const { bg } = useGlobalSearchParams<{ bg?: string }>();
 	const [selectedColor, setSelectedColor] = useState(DEFAULT_COLOR);
+	const { createBoard } = useSupabase();
 
 	useEffect(() => {
 		if (bg) {
@@ -23,7 +25,10 @@ const Page = () => {
 		}
 	}, [bg]);
 
-	const onCreateBoard = async () => {};
+	const onCreateBoard = async () => {
+		await createBoard!(boardName, selectedColor);
+		router.dismiss();
+	};
 
 	return (
 		<View style={{ marginVertical: 10 }}>
