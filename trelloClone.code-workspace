@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"name": "project-root",
+			"path": "./"
+		},
+		{
+			"name": "supabase-functions",
+			"path": "supabase/functions"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"supabase/functions/": true
+		},
+		"deno.import_map": "./supabase/functions/import_map.json",
+		"typescript.tsdk": "project-root/node_modules/typescript/lib"
+	}
+}
