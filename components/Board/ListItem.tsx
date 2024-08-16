@@ -63,6 +63,14 @@ const ListItem = ({ item, drag, isActive }: RenderItemParams<Task>) => {
 						</View>
 					</>
 				)}
+				{!item.image_url && (
+					<View style={{ flexDirection: "row", alignItems: "center" }}>
+						<Text style={{ flex: 1 }}>{item.title}</Text>
+						{item.assigned_to && (
+							<Ionicons name="person-circle-outline" size={16} color={"#000"} />
+						)}
+					</View>
+				)}
 			</TouchableOpacity>
 		</ScaleDecorator>
 	);
