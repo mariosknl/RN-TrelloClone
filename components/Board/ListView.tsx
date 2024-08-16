@@ -22,6 +22,7 @@ import DraggableFlatList, {
 } from "react-native-draggable-flatlist";
 import * as Haptics from "expo-haptics";
 import ListItem from "./ListItem";
+import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 
 export interface ListViewProps {
 	taskList: TaskList;
@@ -38,6 +39,7 @@ const ListView = ({ taskList, onDelete }: ListViewProps) => {
 		getListCards,
 		addListCard,
 		updateCard,
+		getRealtimeCardSubscription,
 	} = useSupabase();
 	const [tasks, setTasks] = useState<Task[]>([]);
 	const [newTask, setNewTask] = useState("");
@@ -45,7 +47,49 @@ const ListView = ({ taskList, onDelete }: ListViewProps) => {
 
 	useEffect(() => {
 		loadListTasks();
+
+		const subscription = getRealtimeCardSubscription!(
+			taskList.id,
+			handleRealtimeChanges
+		);
+
+		return () => {
+			subscription.unsubscribe();
+		};
 	}, []);
+
+	const handleRealtimeChanges = (
+		update: RealtimePostgresChangesPayload<any>
+	) => {
+		const record = update?.new.id ? update.new : update.old;
+		const event = update.eventType;
+
+		if (!record) return;
+
+		if (event === "INSERT") {
+			setTasks((prev) => {
+				return [...prev, record];
+			});
+		} else if (event === "UPDATE") {
+			setTasks((prev) => {
+				return prev
+					.map((task) => {
+						if (task.id === record.id) {
+							return record;
+						}
+						return task;
+					})
+					.filter((task) => !task.done)
+					.sort((a, b) => a.position - b.position);
+			});
+		} else if (event === "DELETE") {
+			setTasks((prev) => {
+				return prev.filter((item) => item.id !== record.id);
+			});
+		} else {
+			console.log("unhandled event", event);
+		}
+	};
 
 	const loadListTasks = async () => {
 		const cards = await getListCards!(taskList.id);
@@ -61,7 +105,6 @@ const ListView = ({ taskList, onDelete }: ListViewProps) => {
 		);
 		setIsAdding(false);
 		setNewTask("");
-		setTasks([...tasks, data]);
 	};
 
 	const renderBackdrop = useCallback(
@@ -118,7 +161,7 @@ const ListView = ({ taskList, onDelete }: ListViewProps) => {
 					<DraggableFlatList
 						data={tasks}
 						renderItem={ListItem}
-						keyExtractor={(item) => item.id}
+						keyExtractor={(item) => `${item.id}`}
 						contentContainerStyle={{ gap: 4 }}
 						containerStyle={{
 							paddingBottom: 4,
