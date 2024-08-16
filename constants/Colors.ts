@@ -4,4 +4,5 @@ export const Colors = {
 	fontLight: "#fff",
 	fontDark: "#292929",
 	white: "#fff",
+	black: "#000",
 };

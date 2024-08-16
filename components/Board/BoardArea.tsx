@@ -43,7 +43,6 @@ const BoardArea = ({ board }: BoardAreaProps) => {
 	const onSaveNewList = async (title: string) => {
 		setStartListActive(false);
 		const { data: newItem } = await addBoardList!(board!.id, title);
-		console.log(newItem);
 		data.pop();
 		setData([...data, newItem, { id: undefined }]);
 	};
