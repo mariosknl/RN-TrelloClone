@@ -23,6 +23,9 @@ import DraggableFlatList, {
 import * as Haptics from "expo-haptics";
 import ListItem from "./ListItem";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import { useAuth } from "@clerk/clerk-expo";
 
 export interface ListViewProps {
 	taskList: TaskList;
@@ -40,10 +43,12 @@ const ListView = ({ taskList, onDelete }: ListViewProps) => {
 		addListCard,
 		updateCard,
 		getRealtimeCardSubscription,
+		uploadFile,
 	} = useSupabase();
 	const [tasks, setTasks] = useState<Task[]>([]);
 	const [newTask, setNewTask] = useState("");
 	const [isAdding, setIsAdding] = useState(false);
+	const { userId } = useAuth();
 
 	useEffect(() => {
 		loadListTasks();
@@ -141,6 +146,38 @@ const ListView = ({ taskList, onDelete }: ListViewProps) => {
 		});
 	};
 
+	const onSelectImage = async () => {
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
+			aspect: [4, 3],
+			quality: 1,
+		});
+
+		if (!result.canceled) {
+			const img = result.assets[0];
+			const base64 = await FileSystem.readAsStringAsync(img.uri, {
+				encoding: "base64",
+			});
+			const fileName = `${new Date().getTime()}-${userId}.${
+				img.type === "image" ? "png" : "mp4"
+			}`;
+			const filePath = `${taskList.board_id}/${fileName}`;
+			const contentType = img.type === "image" ? "image/png" : "video/mp4";
+			const storagePath = await uploadFile!(filePath, base64, contentType);
+
+			if (storagePath) {
+				await addListCard!(
+					taskList.id,
+					taskList.board_id,
+					fileName,
+					tasks.length,
+					storagePath
+				);
+			}
+		}
+	};
+
 	return (
 		<BottomSheetModalProvider>
 			<View style={{ paddingTop: 20, paddingHorizontal: 30 }}>
@@ -203,7 +240,7 @@ const ListView = ({ taskList, onDelete }: ListViewProps) => {
 									<Ionicons name="add" size={14} />
 									<Text style={{ fontSize: 12 }}>Add card</Text>
 								</TouchableOpacity>
-								<TouchableOpacity>
+								<TouchableOpacity onPress={onSelectImage}>
 									<Ionicons name="image-outline" size={16} />
 								</TouchableOpacity>
 							</>
