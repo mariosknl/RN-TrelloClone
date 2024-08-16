@@ -20,6 +20,25 @@ const Layout = () => {
 					),
 				}}
 			/>
+			<Stack.Screen
+				name="board/invite"
+				options={{
+					presentation: "modal",
+					title: "Manage board members",
+					headerLeft: () => (
+						<TouchableOpacity
+							onPress={() => router.back()}
+							style={{
+								backgroundColor: "#E3FDE9",
+								borderRadius: 16,
+								padding: 6,
+							}}
+						>
+							<Ionicons name="close" size={24} color={"#716E75"} />
+						</TouchableOpacity>
+					),
+				}}
+			/>
 		</Stack>
 	);
 };

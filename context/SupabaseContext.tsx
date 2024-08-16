@@ -224,7 +224,7 @@ export const SupabaseProvider = ({ children }: any) => {
 
 	const findUsers = async (search: string) => {
 		// Use the search_users stored procedure to find users by email
-		const { data } = await client.rpc("search_users", { search: search });
+		const { data } = await client.rpc("search_users", { search });
 		return data;
 	};
 
