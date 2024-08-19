@@ -14,14 +14,22 @@
 		},
 		"ios": {
 			"supportsTablet": true,
-			"bundleIdentifier": "com.mariosknl.RNTrelloClone"
+			"bundleIdentifier": "com.mariosknl.RNTrelloClone",
+			"entitlements": {
+				"aps-environment": "development"
+			}
 		},
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/images/adaptive-icon.png",
 				"backgroundColor": "#ffffff"
 			},
-			"package": "com.mariosknl.RNTrelloClone"
+			"package": "com.mariosknl.RNTrelloClone",
+			"permissions": [
+				"android.permission.USE_BIOMETRIC",
+				"android.permission.USE_FINGERPRINT",
+				"android.permission.RECORD_AUDIO"
+			]
 		},
 		"web": {
 			"bundler": "metro",
@@ -43,6 +51,14 @@
 		],
 		"experiments": {
 			"typedRoutes": true
+		},
+		"extra": {
+			"router": {
+				"origin": false
+			},
+			"eas": {
+				"projectId": "d5581856-6aad-4c56-a047-181ceeda0001"
+			}
 		}
 	}
 }
