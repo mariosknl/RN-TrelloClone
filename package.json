@@ -46,7 +46,7 @@
     "react-native-gesture-handler": "~2.27.0",
     "react-native-ios-context-menu": "^2.5.1",
     "react-native-ios-utilities": "^4.4.5",
-    "react-native-reanimated": "~3.18.0",
+    "react-native-reanimated": "~3.19.0",
     "react-native-reanimated-carousel": "4.0.2",
     "react-native-safe-area-context": "5.5.2",
     "react-native-screens": "4.11.1",
