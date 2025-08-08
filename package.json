@@ -47,7 +47,7 @@
     "react-native-ios-context-menu": "^2.5.1",
     "react-native-ios-utilities": "^4.4.5",
     "react-native-reanimated": "~4.0.0",
-    "react-native-reanimated-carousel": "4.0.2",
+    "react-native-reanimated-carousel": "4.0.3",
     "react-native-safe-area-context": "5.5.2",
     "react-native-screens": "4.13.1",
     "react-native-web": "~0.20.0",
