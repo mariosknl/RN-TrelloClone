@@ -52,7 +52,7 @@
     "react-native-screens": "4.16.0",
     "react-native-web": "~0.21.0",
     "zeego": "^3.0.0",
-    "expo-notifications": "~0.31.0",
+    "expo-notifications": "~0.32.0",
     "expo-device": "~6.0.2"
   },
   "devDependencies": {
