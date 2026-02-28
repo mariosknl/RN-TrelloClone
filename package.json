@@ -41,7 +41,7 @@
     "expo-web-browser": "~15.0.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-native": "0.77.0",
+    "react-native": "0.84.1",
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-gesture-handler": "~2.30.0",
     "react-native-ios-context-menu": "^2.5.1",
